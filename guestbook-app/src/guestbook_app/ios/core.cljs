@@ -35,24 +35,47 @@
                 :font-weight "100" :margin-bottom 20 :text-align "center"}}
          "Please leave a note of your visit"]
         [view {:style {:background-color "rgba(255,255,255,0.1)"
-                       :flex-direction "column" :width 660 :padding 20 :align-items "center"}}
+                       :flex-direction "row" :width 660 :padding 20 :align-items "center"}}
          [text-input {:style {
-                              :width 200
+                              :flex 1
                               :height 50
                               :background-color "#fff"
                               :padding 15}
-                      :placeholder "foo"
+                      :placeholder ""
                       :on-change-text #(str %)}]
          [text-input {:style {
-                              :width 200
+                              :flex 1
+                              :marginLeft 10
                               :height 50
                               :background-color "#fff"
                               :padding 15}
-                      :placeholder "foo"
-                      :on-change-text #(str %)}]]
-        [touchable-highlight {:style    {:background-color "#72AF70" :padding 15 :border-radius 2}
-                              :on-press #(alert "foo")}
-         [text {:style {:color "#fff" :text-align "center" :font-family "Avenir" :font-weight "100"}} "press me!"]]]])))
+                      :placeholder ""
+                      :on-change-text #(str %)}]
+         [text-input {:style {
+                              :flex 1
+                              :marginLeft 10
+                              :height 50
+                              :background-color "#fff"
+                              :padding 15}
+                     :placeholder ""
+                     :on-change-text #(str %)}]
+         [text-input {:style {
+                              :flex 1
+                              :marginLeft 10
+                              :height 50
+                              :background-color "#fff"
+                              :padding 15}
+                      :placeholder ""
+                      :on-change-text #(str %)}]
+
+         [touchable-highlight {:style {
+                                       :background-color "#72AF70"
+                                       :padding 15
+                                       :marginLeft 10
+                                       :border-radius 2}
+                               :on-press #(alert "foo")}
+          [text {:style {:color "#fff" :text-align "center" :font-family "Avenir" :font-weight "100"}} "Add"]]]
+        ]])))
 
 (defn init []
   (dispatch-sync [:initialize-db])
