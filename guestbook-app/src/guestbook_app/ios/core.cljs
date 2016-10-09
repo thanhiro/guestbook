@@ -20,7 +20,7 @@
 (defn alert [title]
   (.alert (.-Alert ReactNative) title))
 
-(defn app-root []
+(defn main-panel []
   (let [
         greeting (subscribe [:get-greeting])
         visitors-today (subscribe [:get-visitors-today])
@@ -51,6 +51,13 @@
                                                        }])]])
         ]])))
 
+(defn app-root []
+  (let [ready? (subscribe [:initialised?])]
+    (fn []
+      (if-not @ready?
+        [text "loading..."]
+        [main-panel]))))
+
 (defn init []
-  (dispatch-sync [:initialize-db])
+  (dispatch [:initialize-db])
   (.registerComponent app-registry "GuestbookApp" #(r/reactify-component app-root)))

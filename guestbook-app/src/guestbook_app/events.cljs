@@ -21,7 +21,6 @@
     []))
 
 ;; -- Handlers --------------------------------------------------------------
-
 (reg-event-db
   :initialize-db
   ;;validate-spec-mw
