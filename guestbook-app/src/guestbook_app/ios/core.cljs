@@ -36,6 +36,7 @@
          [input-block "Company"]
          [input-block "Host"]
          [button "Add" #(alert "clicked!")]]
+        [button "XHR" #(dispatch [:request-visitors-today])]
         [text (js/JSON.stringify @visitors-today)]
         (comment [view
                   [text (js/JSON.stringify [list-view {:style      {}

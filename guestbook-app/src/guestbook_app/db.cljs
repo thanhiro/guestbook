@@ -10,6 +10,7 @@
 (def app-db
   {
    :greeting       "Welcome to Arcusys Oulu office"
+   :loading        false
    :visitors-today (clj->js
                      [
                       {:firstName "Teppo" :lastName "Winnipegin" :company "Jets" :host "Spede Pasanen"}

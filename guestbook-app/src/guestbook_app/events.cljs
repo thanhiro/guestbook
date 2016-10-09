@@ -1,6 +1,6 @@
 (ns guestbook-app.events
   (:require
-    [re-frame.core :refer [reg-event-db after]]
+    [re-frame.core :refer [reg-event-db after register-handler dispatch]]
     [clojure.spec :as s]
     [guestbook-app.db :as db :refer [app-db]]))
 
@@ -32,3 +32,30 @@
   ;;validate-spec-mw
   (fn [db [_ value]]
     (assoc db :greeting value)))
+
+(register-handler
+  :bad-response
+  (fn
+    [db [_ _]]
+    (-> db
+        (assoc :loading? false)))
+
+(register-handler
+  ;; when the GET succeeds
+  :process-response
+  (fn
+    [db [_ response]]
+    (-> db
+        (assoc :loading? false)
+        (assoc :visitors-today (.json response)))))
+
+(register-handler
+  :request-visitors-today
+  (fn
+    [db _]
+    ;; kick off the GET, making sure to supply a callback for success and failure
+    (.then (js/fetch
+             "https://jsonplaceholder.typicode.com/users")
+           #(dispatch [:process-response %1])
+           #(dispatch [:bad-response %1]))
+    (assoc db :loading? true)))
