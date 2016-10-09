@@ -3,8 +3,9 @@
 
 (reg-sub
   :initialised?
-  (fn  [db _]
-    (not (empty? db))))
+  (fn [db _]
+    (and (not (empty? db))
+         (not (empty? (:visitors-today db))))))
 
 (reg-sub
   :get-greeting

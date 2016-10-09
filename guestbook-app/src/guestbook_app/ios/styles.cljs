@@ -12,6 +12,10 @@
                          :margin         40
                          :align-items    "center"
                          }
+   :loading-text        {
+                         :color            "#fff"
+                         :background-color "transparent"
+                         }
    :logo                {
                          :width         157
                          :height        22

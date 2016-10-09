@@ -11,10 +11,5 @@
   {
    :greeting       "Welcome to Arcusys Oulu office"
    :loading        false
-   :visitors-today (clj->js
-                     [
-                      {:firstName "Teppo" :lastName "Winnipegin" :company "Jets" :host "Spede Pasanen"}
-                      {:firstName "Reijo" :lastName "Ruotsalainen" :company "Oilers" :host "Simo Salminen"}
-                      {:firstName "Vellu" :lastName "Ketola" :company "Ässät" :host "Vesa-Matti Loiri"}
-                      ])
+   :visitors-today []
    })
