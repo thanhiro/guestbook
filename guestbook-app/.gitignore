@@ -46,6 +46,10 @@ index.android.js
 index.ios.js
 target/
 
+out
+
 # Figwheel
 #
 figwheel_server.log
+
+cljs.jar

@@ -2,6 +2,7 @@
   (:require [reagent.core :as r :refer [atom]]
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
             [guestbook-app.ios.styles :as s]
+            [guestbook-app.ios.components :refer [input-block button]]
             [guestbook-app.events]
             [guestbook-app.subs]))
 
@@ -9,29 +10,12 @@
 
 (def app-registry (.-AppRegistry ReactNative))
 (def text (r/adapt-react-class (.-Text ReactNative)))
-(def text-input (r/adapt-react-class (.-TextInput ReactNative)))
 (def view (r/adapt-react-class (.-View ReactNative)))
 (def list-view (r/adapt-react-class (.-ListView ReactNative)))
 (def image (r/adapt-react-class (.-Image ReactNative)))
-(def touchable-highlight (r/adapt-react-class (.-TouchableHighlight ReactNative)))
 
 (def logo-img (js/require "./images/arculogo.png"))
 (def bg-img (js/require "./images/bg.png"))
-
-(defn input-block [name]
-  [view {:style {:flex           1
-                 :flex-direction "column"
-                 :margin-right   15}}
-   [text {:style {:color "#fff" :font-family "Avenir" :font-size 18 :line-height 30 :font-weight "100"}} name]
-   [text-input {:style          {
-                                 :border-radius    2
-                                 :font-size        15
-                                 :height           50
-                                 :background-color "#fff"
-                                 :padding          15
-                                 }
-                :placeholder    name
-                :on-change-text #(str %)}]])
 
 (defn alert [title]
   (.alert (.-Alert ReactNative) title))
@@ -62,9 +46,7 @@
          [input-block "Last name"]
          [input-block "Company"]
          [input-block "Host"]
-         [touchable-highlight {:style    (:button s/styles)
-                               :on-press #(alert "foo")}
-          [text {:style (:button-text s/styles)} "Add"]]]
+         [button "Add" #(alert "clicked!")]]
         (comment [view
                   ;[text (js/JSON.stringify data-source)]
                   [text (js/JSON.stringify [list-view {:style      {}
