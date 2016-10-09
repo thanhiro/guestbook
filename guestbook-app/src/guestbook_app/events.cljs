@@ -24,12 +24,12 @@
 
 (reg-event-db
   :initialize-db
-  validate-spec-mw
+  ;;validate-spec-mw
   (fn [_ _]
     app-db))
 
 (reg-event-db
   :set-greeting
-  validate-spec-mw
+  ;;validate-spec-mw
   (fn [db [_ value]]
     (assoc db :greeting value)))

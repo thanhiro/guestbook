@@ -23,14 +23,10 @@
 (defn app-root []
   (let [
         greeting (subscribe [:get-greeting])
+        visitors-today (subscribe [:get-visitors-today])
         DataSource (.-DataSource (.-ListView ReactNative))
-        list-stuff (clj->js [
-                             {:firstName "Teppo" :lastName "Winnipegin" :company "Jets" :host "Spede Pasanen"}
-                             {:firstName "Reijo" :lastName "Ruotsalainen" :company "Oilers" :host "Simo Salminen"}
-                             {:firstName "Vellu" :lastName "Ketola" :company "Ässät" :host "Vesa-Matti Loiri"}
-                             ])
         ds (new DataSource (clj->js {:rowHasChanged (fn [row1 row2] (not= row1 row2))}))
-        data-source (.cloneWithRows ds list-stuff)
+        data-source (.cloneWithRows ds visitors-today)
         ]
     (fn []
       [image {:source bg-img
@@ -47,8 +43,8 @@
          [input-block "Company"]
          [input-block "Host"]
          [button "Add" #(alert "clicked!")]]
+        [text (js/JSON.stringify @visitors-today)]
         (comment [view
-                  ;[text (js/JSON.stringify data-source)]
                   [text (js/JSON.stringify [list-view {:style      {}
                                                        :dataSource data-source
                                                        :renderRow  #([text (:firstName %)])
