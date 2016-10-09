@@ -2,17 +2,10 @@
   (:require [reagent.core :as r :refer [atom]]
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
             [guestbook-app.ios.styles :as s]
+            [guestbook-app.ui :refer [ReactNative app-registry view text list-view image]]
             [guestbook-app.ios.components :refer [input-block button]]
             [guestbook-app.events]
             [guestbook-app.subs]))
-
-(def ReactNative (js/require "react-native"))
-
-(def app-registry (.-AppRegistry ReactNative))
-(def text (r/adapt-react-class (.-Text ReactNative)))
-(def view (r/adapt-react-class (.-View ReactNative)))
-(def list-view (r/adapt-react-class (.-ListView ReactNative)))
-(def image (r/adapt-react-class (.-Image ReactNative)))
 
 (def logo-img (js/require "./images/arculogo.png"))
 (def bg-img (js/require "./images/bg.png"))

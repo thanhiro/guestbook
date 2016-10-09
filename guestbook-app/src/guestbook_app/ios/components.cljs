@@ -1,13 +1,7 @@
 (ns guestbook-app.ios.components
   (:require [reagent.core :as r :refer [atom]]
+            [guestbook-app.ui :refer [view text text-input touchable-highlight]]
             [guestbook-app.ios.styles :as s]))
-
-(def ReactNative (js/require "react-native"))
-
-(def text (r/adapt-react-class (.-Text ReactNative)))
-(def text-input (r/adapt-react-class (.-TextInput ReactNative)))
-(def view (r/adapt-react-class (.-View ReactNative)))
-(def touchable-highlight (r/adapt-react-class (.-TouchableHighlight ReactNative)))
 
 (defn input-block [name]
   [view {:style (:input-block-wrapper s/styles)}
