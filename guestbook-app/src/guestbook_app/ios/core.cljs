@@ -2,7 +2,11 @@
   (:require [reagent.core :as r :refer [atom]]
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
             [guestbook-app.ios.styles :as s]
-            [guestbook-app.ui :refer [ReactNative app-registry view text list-view image]]
+            [guestbook-app.ui :refer [ReactNative app-registry view
+                                      text image list-view
+                                      tab-view-page tab-view-animated
+                                      tab-bar-top
+                                      ]]
             [guestbook-app.ios.components :refer [input-block button]]
             [guestbook-app.events]
             [guestbook-app.subs]))
@@ -26,6 +30,11 @@
     [layout
      [text {:style (:loading-text s/styles)} "loading..."]]))
 
+(defn render-scene [{:keys [route]}]
+  [text route])
+(defn render-header [props]
+  [tab-bar-top (js->clj props)])
+
 (defn main-panel []
   (let [
         greeting (subscribe [:get-greeting])
@@ -45,13 +54,11 @@
         [input-block "Company"]
         [input-block "Host"]
         [button "Add" #(alert "clicked!")]]
-       [text (js/JSON.stringify (clj->js @visitors-today))]
-       [button "XHR" #(dispatch [:request-visitors-today])]
-       ;[view
-       ; [text (js/JSON.stringify [list-view {:style      {}
-       ;                                      :dataSource data-source
-       ;                                      :renderRow  #([text (:name %)])
-       ;                                      }])]]
+       ;[button "XHR" #(dispatch [:request-visitors-today])]
+       [list-view {
+                   :dataSource data-source
+                   :renderRow  (fn [row] (r/as-component [text (.-name row)]))
+                   }]
        ])))
 
 (defn app-root []
