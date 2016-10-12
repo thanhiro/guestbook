@@ -30,7 +30,7 @@
     [layout
      [text {:style (:loading-text s/styles)} "loading..."]]))
 
-(defn is-even? [num] (= (mod num 2) 0))
+(defn is-odd? [num] (not= (mod num 2) 0))
 
 (defn render-scene [{:keys [route]}]
   [text route])
@@ -47,7 +47,7 @@
 (defn render-list-row [data _ id]
   (let [
         base-style (:list-row s/styles)
-        rstyle (merge base-style (when (is-even? id) (:list-row-odd s/styles)))]
+        rstyle (merge base-style (when (is-odd? id) (:list-row-odd s/styles)))]
     [view {:style rstyle}
      [text {:style (:list-col s/styles)} id]
      [text {:style (:list-col s/styles)} (.-name data)]
