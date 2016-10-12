@@ -40,18 +40,21 @@
 
 (defn render-list-header []
   [view {:style (:list-head-row s/styles)}
-   [text {:style (:list-col s/styles)} "foo"]
-   [text {:style (:list-col s/styles)} "foo"]
-   [text {:style (:list-col s/styles)} "dd"]])
+   [text {:style (:list-col s/styles)} "First name"]
+   [text {:style (:list-col s/styles)} "Last name"]
+   [text {:style (:list-col s/styles)} "Company"]
+   [text {:style (:list-col s/styles)} "Host"]])
 
 (defn render-list-row [data _ id]
   (let [
         base-style (:list-row s/styles)
         rstyle (merge base-style (when (is-odd? id) (:list-row-odd s/styles)))]
     [view {:style rstyle}
-     [text {:style (:list-col s/styles)} id]
      [text {:style (:list-col s/styles)} (.-name data)]
-     [text {:style (:list-col s/styles)} (.-name data)]]))
+     [text {:style (:list-col s/styles)} (.-name data)]
+     [text {:style (:list-col s/styles)} (.-name data)]
+     [text {:style (:list-col s/styles)} (.-name data)]
+     [button "Check-in" #(alert "clicked!")]]))
 
 (defn main-panel []
   (let [

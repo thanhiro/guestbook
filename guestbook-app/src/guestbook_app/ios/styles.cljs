@@ -49,16 +49,19 @@
 
    :button              {
                          :background-color "#72AF70"
-                         :padding          13
-                         :margin-top       30
+                         :padding-left     13
+                         :padding-right    13
+                         :padding-top      10
+                         :padding-bottom   10
                          :border-radius    2
+                         :margin           2
                          }
 
    :button-text         {
                          :color       "#fff"
                          :text-align  "center"
                          :font-family "Avenir-Black"
-                         :font-size   18
+                         :font-size   16
                          :font-weight "100"
                          }
    :input-block-wrapper {
@@ -97,7 +100,7 @@
                          }
    :list-col            {
                          :color   "#fff"
-                         :width   200
+                         :width   120
                          :padding 10
                          }
    }
