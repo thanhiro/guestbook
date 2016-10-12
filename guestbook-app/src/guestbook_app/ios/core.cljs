@@ -30,10 +30,28 @@
     [layout
      [text {:style (:loading-text s/styles)} "loading..."]]))
 
+(defn is-even? [num] (= (mod num 2) 0))
+
 (defn render-scene [{:keys [route]}]
   [text route])
+
 (defn render-header [props]
   [tab-bar-top (js->clj props)])
+
+(defn render-list-header []
+  [view {:style (:list-head-row s/styles)}
+   [text {:style (:list-col s/styles)} "foo"]
+   [text {:style (:list-col s/styles)} "foo"]
+   [text {:style (:list-col s/styles)} "dd"]])
+
+(defn render-list-row [data _ id]
+  (let [
+        base-style (:list-row s/styles)
+        rstyle (merge base-style (when (is-even? id) (:list-row-odd s/styles)))]
+    [view {:style rstyle}
+     [text {:style (:list-col s/styles)} id]
+     [text {:style (:list-col s/styles)} (.-name data)]
+     [text {:style (:list-col s/styles)} (.-name data)]]))
 
 (defn main-panel []
   (let [
@@ -55,10 +73,29 @@
         [input-block "Host"]
         [button "Add" #(alert "clicked!")]]
        ;[button "XHR" #(dispatch [:request-visitors-today])]
-       [list-view {
-                   :dataSource data-source
-                   :renderRow  (fn [row] (r/as-component [text (.-name row)]))
-                   }]
+       [view {:style {:flex 1}}
+        [list-view {
+                    :style      (:list s/styles)
+                    :renderHeader #(r/as-component (render-list-header))
+                    :dataSource data-source
+                    :renderRow  #(r/as-component (render-list-row %1 %2 %3))
+                    }]]
+
+       ;[tab-view-animated
+       ; {
+       ;  :style              {:flex 1}
+       ;  :navigationState    (clj->js
+       ;                        {
+       ;                         :index  0
+       ;                         :routes [
+       ;                                  {:key "1" :title "MY"}
+       ;                                  {:key "2" :title "OTHER"}
+       ;                                  ]})
+       ;  :renderScene        (fn [p] (r/as-component (render-scene p)))
+       ;  :renderHeader       (fn [p] (r/as-component (render-header p)))
+       ;  :onRequestChangeTab (fn [idx] (println idx))
+       ;  }]
+
        ])))
 
 (defn app-root []

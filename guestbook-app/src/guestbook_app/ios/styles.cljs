@@ -80,5 +80,25 @@
                          :background-color "#fff"
                          :padding          15
                          }
+   :list                {
+                         :flex             1
+                         :background-color "transparent"
+                         }
+   :list-head-row       {
+                         :flex-direction      "row"
+                         :border-bottom-width 1
+                         :border-bottom-color "rgba(255, 255, 255, 0.1)"
+                         }
+   :list-row            {
+                         :flex-direction "row"
+                         }
+   :list-row-odd        {
+                         :background-color "rgba(255, 255, 255, 0.1)"
+                         }
+   :list-col            {
+                         :color   "#fff"
+                         :width   200
+                         :padding 10
+                         }
    }
   )
