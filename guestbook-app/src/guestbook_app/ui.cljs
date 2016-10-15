@@ -6,6 +6,7 @@
 
 (def app-registry (.-AppRegistry ReactNative))
 (def text (r/adapt-react-class (.-Text ReactNative)))
+(def activity-indicator (r/adapt-react-class (.-ActivityIndicator ReactNative)))
 (def view (r/adapt-react-class (.-View ReactNative)))
 (def list-view (r/adapt-react-class (.-ListView ReactNative)))
 (def image (r/adapt-react-class (.-Image ReactNative)))
