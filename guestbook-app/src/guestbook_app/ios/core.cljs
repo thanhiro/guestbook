@@ -5,7 +5,7 @@
             [guestbook-app.ui :refer [ReactNative app-registry view
                                       text image list-view
                                       tab-view-page tab-view-animated
-                                      tab-bar-top
+                                      tab-bar-top activity-indicator
                                       ]]
             [guestbook-app.ios.components :refer [input-block button]]
             [guestbook-app.events]
@@ -28,7 +28,7 @@
 (defn loading-panel []
   (fn []
     [layout
-     [text {:style (:loading-text s/styles)} "loading..."]]))
+     [activity-indicator {:style {} :color "white" :size "large"}]]))
 
 (defn is-odd? [num] (not= (mod num 2) 0))
 
