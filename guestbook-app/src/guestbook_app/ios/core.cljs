@@ -74,7 +74,8 @@
         [input-block "Last name"]
         [input-block "Company"]
         [input-block "Host"]
-        [button "Add" #(alert "clicked!")]]
+        [view  {:style (:btn-block s/styles)}
+         [button "Add" #(alert "clicked!")]]]
        ;[button "XHR" #(dispatch [:request-visitors-today])]
        [view {:style {:flex 1}}
         [list-view {

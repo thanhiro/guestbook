@@ -8,7 +8,6 @@
                          :width  nil
                          }
    :main-view           {
-                         :flex-direction "column"
                          :margin         40
                          :align-items    "center"
                          }
@@ -43,10 +42,8 @@
    :form-block          {
                          :background-color "rgba(255,255,255,0.1)"
                          :flex-direction   "row"
-                         :width            660
-                         :padding          20
-                         :align-items      "center"}
-
+                         :padding          15
+                         }
    :button              {
                          :background-color "#72AF70"
                          :padding-left     13
@@ -65,9 +62,7 @@
                          :font-weight "100"
                          }
    :input-block-wrapper {
-                         :flex           1
-                         :flex-direction "column"
-                         :margin-right   15
+                         :flex-grow 1
                          }
    :input-block-label   {
                          :color       "#fff"
@@ -78,10 +73,15 @@
                          }
    :input-block-input   {
                          :border-radius    2
-                         :font-size        15
+                         :font-size        16
                          :height           50
                          :background-color "#fff"
                          :padding          15
+                         :margin-right 10
+                         }
+   :btn-block           {
+                         :width 70
+                         :margin-top 30
                          }
    :list                {
                          :flex             1
@@ -99,9 +99,9 @@
                          :background-color "rgba(255, 255, 255, 0.1)"
                          }
    :list-col            {
-                         :color   "#fff"
-                         :width   120
-                         :padding 10
+                         :color     "#fff"
+                         :flex-grow 1
+                         :padding   10
                          }
    }
   )
