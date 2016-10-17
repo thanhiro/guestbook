@@ -4,6 +4,7 @@
 (def ReactNative (js/require "react-native"))
 (def Tabs (js/require "react-native-tab-view"))
 
+(def dimensions (.-Dimensions ReactNative))
 (def app-registry (.-AppRegistry ReactNative))
 (def text (r/adapt-react-class (.-Text ReactNative)))
 (def activity-indicator (r/adapt-react-class (.-ActivityIndicator ReactNative)))

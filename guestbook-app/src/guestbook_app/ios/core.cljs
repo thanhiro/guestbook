@@ -3,7 +3,7 @@
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]
             [guestbook-app.ios.styles :as s]
             [guestbook-app.ui :refer [ReactNative app-registry view
-                                      text image list-view
+                                      text image list-view dimensions
                                       tab-view-page tab-view-animated
                                       tab-bar-top activity-indicator
                                       ]]
@@ -38,23 +38,28 @@
 (defn render-header [props]
   [tab-bar-top (js->clj props)])
 
-(defn render-list-header []
-  [view {:style (:list-head-row s/styles)}
-   [text {:style (:list-col s/styles)} "First name"]
-   [text {:style (:list-col s/styles)} "Last name"]
-   [text {:style (:list-col s/styles)} "Company"]
-   [text {:style (:list-col s/styles)} "Host"]])
+(defn render-list-header [width]
+  (let [
+        col-style (assoc (:list-col s/styles) :width width)]
+    [view {:style (:list-head-row s/styles)}
+     [text {:style col-style} "First name"]
+     [text {:style col-style} "Last name"]
+     [text {:style col-style} "Company"]
+     [text {:style col-style} "Host"]
+     [text {:style col-style} ""]]))
 
-(defn render-list-row [data _ id]
+(defn render-list-row [data _ id width]
   (let [
         base-style (:list-row s/styles)
-        rstyle (merge base-style (when (is-odd? id) (:list-row-odd s/styles)))]
+        rstyle (merge base-style (when (is-odd? id) (:list-row-odd s/styles)))
+        col-style (assoc (:list-col s/styles) :width width)]
     [view {:style rstyle}
-     [text {:style (:list-col s/styles)} (.-name data)]
-     [text {:style (:list-col s/styles)} (.-name data)]
-     [text {:style (:list-col s/styles)} (.-name data)]
-     [text {:style (:list-col s/styles)} (.-name data)]
-     [button "Check-in" #(alert "clicked!")]]))
+     [text {:style col-style} (.-name data)]
+     [text {:style col-style} (.-name data)]
+     [text {:style col-style} (.-name data)]
+     [text {:style col-style} (.-name data)]
+     [view {:style (assoc (:list-btn-col s/styles) :width width)}
+      [button "Check-in" #(alert "clicked!")]]]))
 
 (defn main-panel []
   (let [
@@ -63,6 +68,8 @@
         DataSource (.-DataSource (.-ListView ReactNative))
         ds (new DataSource (clj->js {:rowHasChanged (fn [row1 row2] (not= row1 row2))}))
         data-source (.cloneWithRows ds (clj->js @visitors-today))
+        size (.get dimensions "window")
+        col-width (/ (- (.-width size) 80) 5)
         ]
     (fn []
       [layout
@@ -70,19 +77,19 @@
        [text {:style (:info-text s/styles)}
         "Please leave a note of your visit"]
        [view {:style (:form-block s/styles)}
-        [input-block "First name"]
-        [input-block "Last name"]
-        [input-block "Company"]
-        [input-block "Host"]
+        [view {:style (:inputs s/styles)}
+         [input-block "First name"]
+         [input-block "Last name"]
+         [input-block "Company"]
+         [input-block "Host"]]
         [view  {:style (:btn-block s/styles)}
-         [button "Add" #(alert "clicked!")]]]
-       ;[button "XHR" #(dispatch [:request-visitors-today])]
+         [button "Add" #(dispatch [:request-visitors-today])]]]
        [view {:style {:flex 1}}
         [list-view {
                     :style      (:list s/styles)
-                    :renderHeader #(r/as-component (render-list-header))
+                    :renderHeader #(r/as-component (render-list-header col-width))
                     :dataSource data-source
-                    :renderRow  #(r/as-component (render-list-row %1 %2 %3))
+                    :renderRow  #(r/as-component (render-list-row %1 %2 %3 col-width))
                     }]]
 
        ;[tab-view-animated

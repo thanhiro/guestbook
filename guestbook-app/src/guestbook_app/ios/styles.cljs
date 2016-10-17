@@ -8,8 +8,8 @@
                          :width  nil
                          }
    :main-view           {
-                         :margin         40
-                         :align-items    "center"
+                         :margin      40
+                         :align-items "center"
                          }
    :loading-text        {
                          :color            "#fff"
@@ -44,6 +44,10 @@
                          :flex-direction   "row"
                          :padding          15
                          }
+   :inputs              {
+                         :flex           1
+                         :flex-direction "row"
+                         }
    :button              {
                          :background-color "#72AF70"
                          :padding-left     13
@@ -77,15 +81,16 @@
                          :height           50
                          :background-color "#fff"
                          :padding          15
-                         :margin-right 10
+                         :margin-right     10
                          }
    :btn-block           {
-                         :width 70
+                         :width      70
                          :margin-top 30
                          }
    :list                {
                          :flex             1
                          :background-color "transparent"
+                         :margin-top       10
                          }
    :list-head-row       {
                          :flex-direction      "row"
@@ -99,9 +104,11 @@
                          :background-color "rgba(255, 255, 255, 0.1)"
                          }
    :list-col            {
-                         :color     "#fff"
-                         :flex-grow 1
-                         :padding   10
+                         :color   "#fff"
+                         :padding 10
+                         }
+   :list-btn-col        {
+                         :padding 10
                          }
    }
   )
