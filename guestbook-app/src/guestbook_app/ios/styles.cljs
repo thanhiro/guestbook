@@ -110,5 +110,15 @@
    :list-btn-col        {
                          :padding 10
                          }
+   :tab-bar             {
+                         :margin-vertical     10
+                         :border-bottom-width 1
+                         :border-bottom-color "rgba(255, 255, 255, 0.1)"
+                         :background-color    "transparent"
+                         }
+   :tab-indicator       {
+                         :height           3
+                         :background-color "#C8D15B"
+                         }
    }
   )

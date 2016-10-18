@@ -47,10 +47,10 @@
     [db [_ response]]
     (-> db
         (assoc :loading? false)
-        (assoc :visitors-today response))))
+        (assoc :visitors-all response))))
 
 (reg-event-db
-  :request-visitors-today
+  :request-visitors-all
   (fn
     [db _]
     ;; kick off the GET, making sure to supply a callback for success and failure

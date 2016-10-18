@@ -9,7 +9,7 @@
 ;; initial state of app-db
 (def app-db
   {
-   :greeting       "Welcome to Arcusys Oulu office"
+   :greeting       "Welcome to Arcusys office"
    :loading        false
-   :visitors-today []
+   :visitors-all []
    })

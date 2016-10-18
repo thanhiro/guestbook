@@ -32,12 +32,6 @@
 
 (defn is-odd? [num] (not= (mod num 2) 0))
 
-(defn render-scene [{:keys [route]}]
-  [text route])
-
-(defn render-header [props]
-  [tab-bar-top (js->clj props)])
-
 (defn render-list-header [width]
   (let [
         col-style (assoc (:list-col s/styles) :width width)]
@@ -61,13 +55,44 @@
      [view {:style (assoc (:list-btn-col s/styles) :width width)}
       [button "Check-in" #(alert "clicked!")]]]))
 
+(defn render-scene [{:strs [key {:strs [route]}]}
+                    data-source-today data-source-all col-width]
+  [view {:style {:flex 1 :width 600}}
+   [text key]
+   ;[text key]
+   ;[list-view {
+   ;            :style        (:list s/styles)
+   ;            :renderHeader #(r/as-component (render-list-header col-width))
+   ;            :dataSource   (case key
+   ;                            "1" data-source-today
+   ;                            "2" data-source-all
+   ;                            nil)
+   ;            :renderRow    #(r/as-component (render-list-row %1 %2 %3 col-width))
+   ;            }]
+   ])
+
+(defn render-header [props]
+  [tab-bar-top (assoc (js->clj props)
+                 :style (:tab-bar s/styles)
+                 :indicator-style (:tab-indicator s/styles))])
+
 (defn main-panel []
   (let [
+        routes [
+                {:key "1" :title "Visitors today"}
+                {:key "2" :title "Past visitors"}
+                ]
+        navi-state (r/atom
+                 {
+                  :index  0
+                  :routes routes})
         greeting (subscribe [:get-greeting])
-        visitors-today (subscribe [:get-visitors-today])
+        visitors-all (subscribe [:get-visitors-all])
+        visitors-today (take 3 @visitors-all)
         DataSource (.-DataSource (.-ListView ReactNative))
         ds (new DataSource (clj->js {:rowHasChanged (fn [row1 row2] (not= row1 row2))}))
-        data-source (.cloneWithRows ds (clj->js @visitors-today))
+        data-source-all (.cloneWithRows ds (clj->js @visitors-all))
+        data-source-today (.cloneWithRows ds (clj->js visitors-today))
         size (.get dimensions "window")
         col-width (/ (- (.-width size) 80) 5)
         ]
@@ -84,28 +109,19 @@
          [input-block "Host"]]
         [view  {:style (:btn-block s/styles)}
          [button "Add" #(dispatch [:request-visitors-today])]]]
-       [view {:style {:flex 1}}
-        [list-view {
-                    :style      (:list s/styles)
-                    :renderHeader #(r/as-component (render-list-header col-width))
-                    :dataSource data-source
-                    :renderRow  #(r/as-component (render-list-row %1 %2 %3 col-width))
-                    }]]
-
-       ;[tab-view-animated
-       ; {
-       ;  :style              {:flex 1}
-       ;  :navigationState    (clj->js
-       ;                        {
-       ;                         :index  0
-       ;                         :routes [
-       ;                                  {:key "1" :title "MY"}
-       ;                                  {:key "2" :title "OTHER"}
-       ;                                  ]})
-       ;  :renderScene        (fn [p] (r/as-component (render-scene p)))
-       ;  :renderHeader       (fn [p] (r/as-component (render-header p)))
-       ;  :onRequestChangeTab (fn [idx] (println idx))
-       ;  }]
+       ;;#(swap! navi-state update :index 1)
+       [text (:index @navi-state)]
+       [tab-view-animated
+        {
+         :style              {:flex 1}
+         :navigation-state   (clj->js @navi-state)
+         :render-scene       #(r/as-component
+                               [text "moi.........."])
+         :render-header      #(r/as-component
+                               (render-header %))
+         :onRequestChangeTab #(do
+                               (reset! navi-state {:index (js->clj %) :routes routes}))
+         }]
 
        ])))
 
@@ -118,5 +134,5 @@
 
 (defn init []
   (dispatch [:initialize-db])
-  (dispatch [:request-visitors-today])
+  (dispatch [:request-visitors-all])
   (.registerComponent app-registry "GuestbookApp" #(r/reactify-component app-root)))

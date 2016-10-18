@@ -5,7 +5,7 @@
   :initialised?
   (fn [db _]
     (and (not (empty? db))
-         (not (empty? (:visitors-today db))))))
+         (not (empty? (:visitors-all db))))))
 
 (reg-sub
   :get-greeting
@@ -13,5 +13,5 @@
     (:greeting db)))
 
 (reg-sub
-  :get-visitors-today
-  #(:visitors-today %1))
+  :get-visitors-all
+  #(:visitors-all %1))
