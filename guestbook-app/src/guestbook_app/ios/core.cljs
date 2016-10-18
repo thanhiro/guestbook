@@ -55,20 +55,18 @@
      [view {:style (assoc (:list-btn-col s/styles) :width width)}
       [button "Check-in" #(alert "clicked!")]]]))
 
-(defn render-scene [{:strs [key {:strs [route]}]}
-                    data-source-today data-source-all col-width]
-  [view {:style {:flex 1 :width 600}}
-   [text key]
-   ;[text key]
-   ;[list-view {
-   ;            :style        (:list s/styles)
-   ;            :renderHeader #(r/as-component (render-list-header col-width))
-   ;            :dataSource   (case key
-   ;                            "1" data-source-today
-   ;                            "2" data-source-all
-   ;                            nil)
-   ;            :renderRow    #(r/as-component (render-list-row %1 %2 %3 col-width))
-   ;            }]
+;; {:strs [key {:strs [route]}]}
+(defn render-scene [key data-source-today data-source-all col-width]
+  [view {:style {:flex 1}}
+   [list-view {
+               :style        (:list s/styles)
+               :renderHeader #(r/as-component (render-list-header col-width))
+               :dataSource   (case key
+                               0 data-source-today
+                               1 data-source-all
+                               nil)
+               :renderRow    #(r/as-component (render-list-row %1 %2 %3 col-width))
+               }]
    ])
 
 (defn render-header [props]
@@ -94,7 +92,8 @@
         data-source-all (.cloneWithRows ds (clj->js @visitors-all))
         data-source-today (.cloneWithRows ds (clj->js visitors-today))
         size (.get dimensions "window")
-        col-width (/ (- (.-width size) 80) 5)
+        width (- (.-width size) 80)
+        col-width (/ width 5)
         ]
     (fn []
       [layout
@@ -110,19 +109,18 @@
         [view  {:style (:btn-block s/styles)}
          [button "Add" #(dispatch [:request-visitors-today])]]]
        ;;#(swap! navi-state update :index 1)
-       [text (:index @navi-state)]
        [tab-view-animated
         {
          :style              {:flex 1}
          :navigation-state   (clj->js @navi-state)
          :render-scene       #(r/as-component
-                               [text "moi.........."])
+                               [view {:style {:width width}}])
          :render-header      #(r/as-component
                                (render-header %))
-         :onRequestChangeTab #(do
-                               (reset! navi-state {:index (js->clj %) :routes routes}))
+         :onRequestChangeTab #(reset! navi-state {:index (js->clj %) :routes routes})
          }]
-
+       [view
+        (r/as-component (render-scene (:index @navi-state) data-source-today data-source-all col-width))]
        ])))
 
 (defn app-root []
