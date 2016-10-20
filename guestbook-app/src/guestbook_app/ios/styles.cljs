@@ -111,10 +111,17 @@
                          :padding 10
                          }
    :tab-bar             {
+                         :flex                1
+                         :flex-direction      "row"
                          :margin-vertical     10
                          :border-bottom-width 1
                          :border-bottom-color "rgba(255, 255, 255, 0.1)"
                          :background-color    "transparent"
+                         }
+   :tab-label           {
+                         :width      200
+                         :text-align "center"
+                         :color      "white"
                          }
    :tab-indicator       {
                          :height           3

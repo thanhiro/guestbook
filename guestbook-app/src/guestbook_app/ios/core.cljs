@@ -4,10 +4,10 @@
             [guestbook-app.ios.styles :as s]
             [guestbook-app.ui :refer [ReactNative app-registry view
                                       text image list-view dimensions
-                                      tab-view-page tab-view-animated
-                                      tab-bar-top activity-indicator
+                                      activity-indicator
                                       ]]
-            [guestbook-app.ios.components :refer [input-block button]]
+            [guestbook-app.ios.components :refer [input-block button
+                                                  tab-bar tab-link]]
             [guestbook-app.events]
             [guestbook-app.subs]))
 
@@ -56,23 +56,19 @@
       [button "Check-in" #(alert "clicked!")]]]))
 
 ;; {:strs [key {:strs [route]}]}
-(defn render-scene [key data-source-today data-source-all col-width]
+(defn render-scene [ds col-width]
   [view {:style {:flex 1}}
-   [list-view {
-               :style        (:list s/styles)
-               :renderHeader #(r/as-component (render-list-header col-width))
-               :dataSource   (case key
-                               0 data-source-today
-                               1 data-source-all
-                               nil)
-               :renderRow    #(r/as-component (render-list-row %1 %2 %3 col-width))
-               }]
+   [list-view
+    {
+     :style        (:list s/styles)
+     :renderHeader #(r/as-component (render-list-header col-width))
+     :dataSource   ds
+     :renderRow    #(r/as-component (render-list-row %1 %2 %3 col-width))
+     }]
    ])
 
-(defn render-header [props]
-  [tab-bar-top (assoc (js->clj props)
-                 :style (:tab-bar s/styles)
-                 :indicator-style (:tab-indicator s/styles))])
+(defn handle-tab-press [indx navi-state routes]
+  #(reset! navi-state {:index indx :routes routes}))
 
 (defn main-panel []
   (let [
@@ -81,9 +77,9 @@
                 {:key "2" :title "Past visitors"}
                 ]
         navi-state (r/atom
-                 {
-                  :index  0
-                  :routes routes})
+                     {
+                      :index  0
+                      :routes routes})
         greeting (subscribe [:get-greeting])
         visitors-all (subscribe [:get-visitors-all])
         visitors-today (take 3 @visitors-all)
@@ -106,21 +102,32 @@
          [input-block "Last name"]
          [input-block "Company"]
          [input-block "Host"]]
-        [view  {:style (:btn-block s/styles)}
+        [view {:style (:btn-block s/styles)}
          [button "Add" #(dispatch [:request-visitors-today])]]]
        ;;#(swap! navi-state update :index 1)
-       [tab-view-animated
-        {
-         :style              {:flex 1}
-         :navigation-state   (clj->js @navi-state)
-         :render-scene       #(r/as-component
-                               [view {:style {:width width}}])
-         :render-header      #(r/as-component
-                               (render-header %))
-         :onRequestChangeTab #(reset! navi-state {:index (js->clj %) :routes routes})
-         }]
+
+       (comment
+         [tab-view-animated
+          {
+           :style              {:flex 1}
+           :navigation-state   (clj->js @navi-state)
+           :render-scene       #(r/as-component
+                                 [view {:style {:width width}}])
+           :render-header      #(r/as-component
+                                 (render-header %))
+           :onRequestChangeTab #(reset! navi-state {:index (js->clj %) :routes routes})
+           }])
+
+       [tab-bar
+        [tab-link "visitors today" (handle-tab-press 0 navi-state routes)]
+        [tab-link "past visitors" (handle-tab-press 1 navi-state routes)]]
        [view
-        (r/as-component (render-scene (:index @navi-state) data-source-today data-source-all col-width))]
+        (r/as-component
+          (render-scene
+            (case (:index @navi-state)
+              0 data-source-today
+              1 data-source-all
+              nil) col-width))]
        ])))
 
 (defn app-root []
