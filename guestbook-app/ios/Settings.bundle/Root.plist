@@ -10,11 +10,25 @@
 			<key>Type</key>
 			<string>PSMultiValueSpecifier</string>
 			<key>Title</key>
-			<string></string>
+			<string>City</string>
 			<key>Key</key>
-			<string></string>
+			<string>city</string>
 			<key>DefaultValue</key>
-			<string></string>
+			<string>0</string>
+			<key>Titles</key>
+			<array>
+				<string>Oulu</string>
+				<string>Joensuu</string>
+				<string>Helsinki</string>
+				<string>Lappeenranta</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>1</string>
+				<string>2</string>
+				<string>3</string>
+				<string>4</string>
+			</array>
 		</dict>
 	</array>
 </dict>
