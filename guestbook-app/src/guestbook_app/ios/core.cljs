@@ -117,7 +117,6 @@
                                  (render-header %))
            :onRequestChangeTab #(reset! navi-state {:index (js->clj %) :routes routes})
            }])
-
        [tab-bar
         [tab-link "visitors today" (handle-tab-press 0 navi-state routes)]
         [tab-link "past visitors" (handle-tab-press 1 navi-state routes)]]
@@ -131,11 +130,15 @@
        ])))
 
 (defn app-root []
-  (let [ready? (subscribe [:initialised?])]
+  (let [
+        ready? (subscribe [:initialised?])
+        ]
     (fn []
-      (if-not @ready?
-        [loading-panel]
-        [main-panel]))))
+      (let [th (r/current-component)
+            ]
+        (if-not @ready?
+          [loading-panel]
+          [main-panel])))))
 
 (defn init []
   (dispatch [:initialize-db])

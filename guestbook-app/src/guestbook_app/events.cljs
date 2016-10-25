@@ -1,6 +1,7 @@
 (ns guestbook-app.events
   (:require
-    [re-frame.core :refer [reg-event-db after dispatch]]
+    [guestbook-app.fetch-fx]
+    [re-frame.core :refer [reg-event-db reg-event-fx after dispatch]]
     [clojure.spec :as s]
     [guestbook-app.db :as db :refer [app-db]]))
 
@@ -49,16 +50,27 @@
         (assoc :loading? false)
         (assoc :visitors-all response))))
 
-(reg-event-db
+(reg-event-fx
   :request-visitors-all
   (fn
-    [db _]
-    ;; kick off the GET, making sure to supply a callback for success and failure
-    (.catch
-      (.then
-        (.then
-          (js/fetch "https://jsonplaceholder.typicode.com/users")
-          #(js->clj (.json %1)))
-        #(dispatch [:process-response %1]))
-      #(dispatch [:bad-response %1]))
-    (assoc db :loading? true)))
+    [{db :db} _]
+    {:http-fetch
+         {:method     :get
+          :uri        "https://jsonplaceholder.typicode.com/users"
+          :on-success [:process-response]
+          :on-failure [:bad-response]}
+     :db (assoc db :loading? true)}))
+
+;(reg-event-db
+;  :request-visitors-all
+;  (fn
+;    [db _]
+;    ;; kick off the GET, making sure to supply a callback for success and failure
+;    (.catch
+;      (.then
+;        (.then
+;          (js/fetch "https://jsonplaceholder.typicode.com/users")
+;          #(js->clj (.json %1)))
+;        #(dispatch [:process-response %1]))
+;      #(dispatch [:bad-response %1]))
+;    (assoc db :loading? true)))
