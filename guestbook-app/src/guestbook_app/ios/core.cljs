@@ -55,7 +55,16 @@
      [view {:style (assoc (:list-btn-col s/styles) :width width)}
       [button "Check-in" #(alert "clicked!")]]]))
 
-;; {:strs [key {:strs [route]}]}
+(defn add-form []
+  [view {:style (:form-block s/styles)}
+   [view {:style (:inputs s/styles)}
+    [input-block "First name"]
+    [input-block "Last name"]
+    [input-block "Company"]
+    [input-block "Host"]]
+   [view {:style (:btn-block s/styles)}
+    [button "Add" #(dispatch [:request-visitors-today])]]])
+
 (defn render-scene [ds col-width]
   [view {:style {:flex 1}}
    [list-view
@@ -71,11 +80,8 @@
   #(reset! navi-state {:index indx :routes routes}))
 
 (defn main-panel []
-  (let [
-        routes [
-                {:key "1" :title "Visitors today"}
-                {:key "2" :title "Past visitors"}
-                ]
+  (let [routes [{:key "1" :title "Visitors today"}
+                {:key "2" :title "Past visitors"}]
         navi-state (r/atom
                      {
                       :index  0
@@ -89,34 +95,15 @@
         data-source-today (.cloneWithRows ds (clj->js visitors-today))
         size (.get dimensions "window")
         width (- (.-width size) 80)
-        col-width (/ width 5)
-        ]
+        col-width (/ width 5)]
     (fn []
       [layout
        [text {:style (:welcome s/styles)} @greeting]
        [text {:style (:info-text s/styles)}
         "Please leave a note of your visit"]
-       [view {:style (:form-block s/styles)}
-        [view {:style (:inputs s/styles)}
-         [input-block "First name"]
-         [input-block "Last name"]
-         [input-block "Company"]
-         [input-block "Host"]]
-        [view {:style (:btn-block s/styles)}
-         [button "Add" #(dispatch [:request-visitors-today])]]]
-       ;;#(swap! navi-state update :index 1)
 
-       (comment
-         [tab-view-animated
-          {
-           :style              {:flex 1}
-           :navigation-state   (clj->js @navi-state)
-           :render-scene       #(r/as-component
-                                 [view {:style {:width width}}])
-           :render-header      #(r/as-component
-                                 (render-header %))
-           :onRequestChangeTab #(reset! navi-state {:index (js->clj %) :routes routes})
-           }])
+       [add-form]
+
        [tab-bar
         [tab-link "visitors today" (handle-tab-press 0 navi-state routes)]
         [tab-link "past visitors" (handle-tab-press 1 navi-state routes)]]
