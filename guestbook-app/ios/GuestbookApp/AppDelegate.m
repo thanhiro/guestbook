@@ -20,15 +20,17 @@
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 
+  /*
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   NSDictionary *city = [defaults valueForKey:@"city"];
   NSString *value = (NSString *)city;
 
   NSDictionary *props = @{@"city" : value};
+  */
   
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"GuestbookApp"
-                                               initialProperties:props
+                                               initialProperties:nil
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
