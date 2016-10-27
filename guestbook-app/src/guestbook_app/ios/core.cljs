@@ -6,24 +6,14 @@
                                       text image list-view dimensions
                                       activity-indicator
                                       ]]
+            [guestbook-app.ios.layout :refer [layout]]
             [guestbook-app.ios.components :refer [input-block button
                                                   tab-bar tab-link]]
             [guestbook-app.events]
             [guestbook-app.subs]))
 
-(def logo-img (js/require "./images/arculogo.png"))
-(def bg-img (js/require "./images/bg.png"))
-
 (defn alert [title]
   (.alert (.-Alert ReactNative) title))
-
-(defn layout []
-  (let [this (r/current-component)]
-    [image {:source bg-img
-            :style  (:container s/styles)}
-     (into [view {:style (:main-view s/styles)}
-            [image {:source logo-img
-                    :style  (:logo s/styles)}]] (r/children this))]))
 
 (defn loading-panel []
   (fn []
@@ -76,6 +66,14 @@
      }]
    ])
 
+(defn data-source []
+  (let [DataSource (.-DataSource (.-ListView ReactNative))]
+    (DataSource.
+         (clj->js {:rowHasChanged (fn [row1 row2] (not= row1 row2))}))))
+
+(defn clone-ds-with-rows [ds rows]
+  (.cloneWithRows ds (clj->js rows)))
+
 (defn handle-tab-press [indx navi-state routes]
   #(reset! navi-state {:index indx :routes routes}))
 
@@ -89,10 +87,9 @@
         greeting (subscribe [:get-greeting])
         visitors-all (subscribe [:get-visitors-all])
         visitors-today (take 3 @visitors-all)
-        DataSource (.-DataSource (.-ListView ReactNative))
-        ds (new DataSource (clj->js {:rowHasChanged (fn [row1 row2] (not= row1 row2))}))
-        data-source-all (.cloneWithRows ds (clj->js @visitors-all))
-        data-source-today (.cloneWithRows ds (clj->js visitors-today))
+        ds (data-source)
+        data-source-all (clone-ds-with-rows ds @visitors-all)
+        data-source-today (clone-ds-with-rows ds visitors-today)
         size (.get dimensions "window")
         width (- (.-width size) 80)
         col-width (/ width 5)]

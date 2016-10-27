@@ -1,25 +1,7 @@
 (ns guestbook-app.fetch-fx
   (:require
-    [goog.net.ErrorCode :as errors]
     [re-frame.core :refer [reg-fx dispatch console]]
     [cljs.spec :as s]))
-
-(defn ajax-xhrio-handler
-  "ajax-request only provides a single handler for success and errors"
-  [on-success on-failure xhrio [success? response]]
-  ; see http://docs.closure-library.googlecode.com/git/class_goog_net_XhrIo.html
-  (if success?
-    (on-success response)
-    (let [details
-          (merge
-            {:uri             (.getLastUri xhrio)
-             :last-method     (.-lastMethod_ xhrio)
-             :last-error      (.getLastError xhrio)
-             :last-error-code (.getLastErrorCode xhrio)
-             :debug-message   (-> xhrio .getLastErrorCode (errors/getDebugMessage))}
-            response)]
-      (on-failure details))))
-
 
 (defn request->fetch-options
   [{:as   request
@@ -28,20 +10,17 @@
            on-failure [:http-no-on-failure]}}]
   (-> request
       (assoc
-        :method (name method)
-        :url uri)))
+        :method (name method))))
 
 (s/def ::sequential-or-map (s/or :list-or-vector sequential? :map map?))
 
-(fn fetch
+(defn fetch
   [opts]
-  (.catch
-    (.then
-      (.then
-        (js/fetch opts)
-        #(js->clj (.json %1)))
-      #(dispatch (conj (:on-success opts) %)))
-    #(dispatch (conj (:on-failure opts) %))))
+  (do
+    (-> (js/fetch (:uri opts) (clj->js opts))
+        (.then #(js->clj (.json %)))
+        (.then #(dispatch (conj (:on-success opts) %)))
+        (.catch #(dispatch (conj (:on-failure opts) %))))))
 
 (reg-fx
   :http-fetch
@@ -53,7 +32,7 @@
       (map? request) (->
                        request
                        request->fetch-options
-                       js/fetch)
+                       fetch)
       :else (console
               :error
               "fetch-fx: expected request to be a list
