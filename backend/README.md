@@ -1,80 +1,21 @@
 # backend
 
-A [re-frame](https://github.com/Day8/re-frame) application designed to ... well, that part is up to you.
+generated using Luminus version "2.9.11.11"
 
-## Development Mode
+FIXME
 
-### Start Cider from Emacs:
+## Prerequisites
 
-Put this in your Emacs config file:
+You will need [Leiningen][1] 2.0 or above installed.
 
-```
-(setq cider-cljs-lein-repl "(do (use 'figwheel-sidecar.repl-api) (start-figwheel!) (cljs-repl))")
-```
+[1]: https://github.com/technomancy/leiningen
 
-Navigate to a clojurescript file and start a figwheel REPL with `cider-jack-in-clojurescript` or (`C-c M-J`)
+## Running
 
-### Compile css:
+To start a web server for the application, run:
 
-Compile css file once.
+    lein run
 
-```
-lein garden once
-```
+## License
 
-Automatically recompile css file on change.
-
-```
-lein garden auto
-```
-
-### Run application:
-
-```
-lein clean
-lein figwheel dev
-```
-
-Figwheel will automatically push cljs changes to the browser.
-
-Wait a bit, then browse to [http://localhost:3449](http://localhost:3449).
-
-### Run tests:
-
-```
-lein clean
-lein doo phantom test once
-```
-
-The above command assumes that you have [phantomjs](https://www.npmjs.com/package/phantomjs) installed. However, please note that [doo](https://github.com/bensu/doo) can be configured to run cljs.test in many other JS environments (chrome, ie, safari, opera, slimer, node, rhino, or nashorn).
-
-## Production Build
-
-```
-lein clean
-lein uberjar
-```
-
-That should compile the clojurescript code first, and then create the standalone jar.
-
-When you run the jar you can set the port the ring server will use by setting the environment variable PORT.
-If it's not set, it will run on port 3000 by default.
-
-To deploy to heroku, first create your app:
-
-```
-heroku create
-```
-
-Then deploy the application:
-
-```
-git push heroku master
-```
-
-To compile clojurescript to javascript:
-
-```
-lein clean
-lein cljsbuild once min
-```
+Copyright © 2016 FIXME

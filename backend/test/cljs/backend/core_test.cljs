@@ -1,7 +1,8 @@
 (ns backend.core-test
-  (:require [cljs.test :refer-macros [deftest testing is]]
-            [backend.core :as core]))
+  (:require [cljs.test :refer-macros [is are deftest testing use-fixtures]]
+            [reagent.core :as reagent :refer [atom]]
+            [backend.core :as rc]))
 
-(deftest fake-test
-  (testing "fake description"
-    (is (= 1 2))))
+(deftest test-home
+  (is (= true true)))
+

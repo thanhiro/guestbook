@@ -1,13 +1,25 @@
 (ns backend.handler
-  (:require [compojure.core :refer [GET defroutes]]
-            [compojure.route :refer [resources]]
-            [ring.util.response :refer [resource-response]]
-            [ring.middleware.reload :refer [wrap-reload]]))
+  (:require [compojure.core :refer [routes wrap-routes]]
+            [backend.layout :refer [error-page]]
+            [backend.routes.home :refer [home-routes]]
+            [compojure.route :as route]
+            [backend.env :refer [defaults]]
+            [mount.core :as mount]
+            [backend.middleware :as middleware]))
 
-(defroutes routes
-  (GET "/" [] (resource-response "index.html" {:root "public"}))
-  (resources "/"))
+(mount/defstate init-app
+                :start ((or (:init defaults) identity))
+                :stop  ((or (:stop defaults) identity)))
 
-(def dev-handler (-> #'routes wrap-reload))
+(def app-routes
+  (routes
+    (-> #'home-routes
+        (wrap-routes middleware/wrap-csrf)
+        (wrap-routes middleware/wrap-formats))
+    (route/not-found
+      (:body
+        (error-page {:status 404
+                     :title "page not found"})))))
 
-(def handler routes)
+
+(defn app [] (middleware/wrap-base #'app-routes))

@@ -1,13 +1,18 @@
 (ns backend.handlers
-    (:require [re-frame.core :as re-frame]
-              [backend.db :as db]))
+  (:require [backend.db :as db]
+            [re-frame.core :refer [dispatch reg-event-db]]))
 
-(re-frame/reg-event-db
- :initialize-db
- (fn  [_ _]
-   db/default-db))
+(reg-event-db
+  :initialize-db
+  (fn [_ _]
+    db/default-db))
 
-(re-frame/reg-event-db
- :set-active-panel
- (fn [db [_ active-panel]]
-   (assoc db :active-panel active-panel)))
+(reg-event-db
+  :set-active-page
+  (fn [db [_ page]]
+    (assoc db :page page)))
+
+(reg-event-db
+  :set-docs
+  (fn [db [_ docs]]
+    (assoc db :docs docs)))

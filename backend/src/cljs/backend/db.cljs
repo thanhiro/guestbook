@@ -1,4 +1,4 @@
 (ns backend.db)
 
 (def default-db
-  {:name "re-frame"})
+  {:page :home})
