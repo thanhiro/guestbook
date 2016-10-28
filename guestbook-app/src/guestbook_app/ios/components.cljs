@@ -28,5 +28,5 @@
                         :style (:tab-link s/styles)
                         :on-press handle-press
                         }
-   [text {:style (:tab-label s/styles)} label]
-   ])
+   [view
+    [text {:style (:tab-label s/styles)} label]]])

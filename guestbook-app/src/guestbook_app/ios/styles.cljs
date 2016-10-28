@@ -113,15 +113,25 @@
    :tab-bar             {
                          :flex                1
                          :flex-direction      "row"
-                         :margin-vertical     10
+                         :margin-vertical     20
                          :border-bottom-width 1
                          :border-bottom-color "rgba(255, 255, 255, 0.1)"
                          :background-color    "transparent"
                          }
+   :tab-link            {
+                         :padding 10
+                         :flex-grow 1
+                         :border-width 1
+                         :border-color "rgba(255, 255, 255, 0.1)"
+                         }
    :tab-label           {
+                         :padding    10
                          :width      200
-                         :text-align "center"
-                         :color      "white"
+                         :color       "#fff"
+                         :text-align  "center"
+                         :font-family "Avenir-Black"
+                         :font-size   16
+                         :font-weight "100"
                          }
    :tab-indicator       {
                          :height           3
