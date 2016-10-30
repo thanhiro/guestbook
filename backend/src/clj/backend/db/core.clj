@@ -12,14 +12,20 @@
 (defstate db
   :start (:db db*))
 
-(defn create-user [user]
-  (mc/insert db "users" user))
+(def visitors-col "visitors")
 
-(defn update-user [id first-name last-name email]
-  (mc/update db "users" {:_id id}
+(defn create-visitor [visitor]
+  (mc/insert db visitors-col visitor))
+
+(defn update-visitor [id first-name last-name company host]
+  (mc/update db visitors-col {:_id id}
              {$set {:first_name first-name
                     :last_name last-name
-                    :email email}}))
+                    :company company
+                    :host host}}))
 
-(defn get-user [id]
-  (mc/find-one-as-map db "users" {:_id id}))
+(defn get-visitors []
+  (mc/find-maps db visitors-col))
+
+(defn get-visitor [id]
+  (mc/find-one-as-map db visitors-col {:_id id}))

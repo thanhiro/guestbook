@@ -3,6 +3,7 @@
             [backend.layout :refer [error-page]]
             [backend.routes.home :refer [home-routes]]
             [backend.routes.api :refer [api-routes]]
+            [backend.db.core :as db]
             [compojure.route :as route]
             [backend.env :refer [defaults]]
             [mount.core :as mount]
