@@ -6,6 +6,18 @@
             [ring.util.http-response :refer :all]
             [clojure.java.io :as io]))
 
+(s/defschema Visitor
+             {
+              :id        s/Int
+              :firstName s/Str
+              :lastName  s/Str
+              :company   s/Str
+              :host      s/Str
+              :date      Long
+                         :city s/Str
+              })
+(s/defschema NewVisitor (dissoc Visitor :id))
+
 (defapi api-routes
   {:swagger {:ui "/swagger-ui"
              :spec "/swagger.json"
@@ -18,6 +30,8 @@
       (ok (db/get-visitors)))
     (GET "/visitors" []
       (ok (db/get-visitors)))
-    (POST "/visitors" []
-      (ok (db/get-visitors)))))
+    (POST "/visitors" req
+      :return Visitor
+      :body [visitor NewVisitor]
+      (ok (db/create-visitor visitor)))))
 
