@@ -6,16 +6,17 @@
             [ring.util.http-response :refer :all]
             [clojure.java.io :as io]))
 
-(s/defschema Visitor
-             {
-              :id        s/Int
-              :firstName s/Str
-              :lastName  s/Str
-              :company   s/Str
-              :host      s/Str
-              :date      Long
-                         :city s/Str
-              })
+(s/defschema
+  Visitor
+  {
+   :id         s/Int
+   :first-name s/Str
+   :last-name  s/Str
+   :company    s/Str
+   :host       s/Str
+   :date       Long
+   :city       s/Str
+   })
 (s/defschema NewVisitor (dissoc Visitor :id))
 
 (defapi api-routes
