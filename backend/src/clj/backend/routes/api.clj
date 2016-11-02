@@ -4,12 +4,13 @@
             [compojure.api.sweet :refer :all]
             [schema.core :as s]
             [ring.util.http-response :refer :all]
-            [clojure.java.io :as io]))
+            [clojure.java.io :as io])
+    (:import org.bson.types.ObjectId))
 
 (s/defschema
   Visitor
   {
-   :id         s/Int
+   :_id        ObjectId
    :first-name s/Str
    :last-name  s/Str
    :company    s/Str
@@ -17,7 +18,7 @@
    :date       Long
    :city       s/Str
    })
-(s/defschema NewVisitor (dissoc Visitor :id))
+(s/defschema NewVisitor (dissoc Visitor :_id))
 
 (defapi api-routes
   {:swagger {:ui "/swagger-ui"

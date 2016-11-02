@@ -15,7 +15,7 @@
 (def visitors-col "visitors")
 
 (defn create-visitor [visitor]
-  (mc/insert db visitors-col visitor))
+  (mc/insert-and-return db visitors-col visitor))
 
 (defn update-visitor [id first-name last-name company host]
   (mc/update db visitors-col {:_id id}

@@ -1,5 +1,6 @@
 (ns backend.test.routes.api
     (:require [clojure.test :refer :all]
+      [backend.db.core :refer :all]
       [ring.mock.request :refer :all]
       [backend.handler :refer :all]))
 
