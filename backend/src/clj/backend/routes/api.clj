@@ -33,7 +33,9 @@
     (GET "/visitors" []
       (ok (db/get-visitors)))
     (POST "/visitors" req
-      :return Visitor
+      :return s/Any
       :body [visitor NewVisitor]
-      (ok (db/create-visitor visitor)))))
+      (ok {:_id
+           (.toString
+             (:_id (db/create-visitor visitor)))}))))
 
