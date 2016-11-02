@@ -1,14 +1,20 @@
-# backend
+# Backend
 
-generated using Luminus version "2.9.11.11"
-
-FIXME
+JSON API and small UI for guestbook use.
 
 ## Prerequisites
 
-You will need [Leiningen][1] 2.0 or above installed.
+* Java and [Leiningen][1] 2.0 or above installed.
+* Copy `profiles_tpl.clj` as `profiles.clj` and customize DB address if needed.
+* [MongoDB][2] must be running on the address in profiles.clj.
+
+```
+mongod --storageEngine=wiredTiger
+```
 
 [1]: https://github.com/technomancy/leiningen
+[2]: https://www.mongodb.com
+
 
 ## Running
 
@@ -18,4 +24,4 @@ To start a web server for the application, run:
 
 ## License
 
-Copyright © 2016 FIXME
+Copyright © 2016 Me
