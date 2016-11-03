@@ -11,8 +11,8 @@
   Visitor
   {
    :_id        s/Str
-   :first-name s/Str
-   :last-name  s/Str
+   :firstName s/Str
+   :lastName  s/Str
    :company    s/Str
    :host       s/Str
    :date       Long
