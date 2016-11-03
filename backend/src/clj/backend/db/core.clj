@@ -14,17 +14,29 @@
 
 (def visitors-col "visitors")
 
-(defn create-visitor [visitor]
-  (mc/insert-and-return db visitors-col visitor))
+(defn serialize-object-id-in [map]
+  (assoc map :_id (str (:_id map))))
 
-(defn update-visitor [visitor]
-  (let [id (:_id visitor)
-        v (dissoc visitor :_id)]
-       (mc/update db visitors-col {:_id id}
-                  {$set v})))
+(defn create-visitor [visitor]
+  (serialize-object-id-in
+    (mc/insert-and-return db visitors-col visitor)))
+
+(defn update-visitor [id visitor]
+  (let [v (dissoc visitor :_id)]
+    (mc/update db visitors-col {:_id id}
+               {$set v})))
+
+(defn get-visitors-by-date [date]
+  (let
+    [res (mc/find-maps db visitors-col)]
+    (map serialize-object-id-in res)))
 
 (defn get-visitors []
-  (mc/find-maps db visitors-col))
+  (let
+    [res (mc/find-maps db visitors-col)]
+    (map serialize-object-id-in res)))
 
 (defn get-visitor [id]
-  (mc/find-one-as-map db visitors-col {:_id id}))
+  (let
+    [res (mc/find-one-as-map db visitors-col {:_id id})]
+    (serialize-object-id-in res)))

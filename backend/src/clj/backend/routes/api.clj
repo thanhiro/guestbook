@@ -10,7 +10,7 @@
 (s/defschema
   Visitor
   {
-   :_id        ObjectId
+   :_id        s/Str
    :first-name s/Str
    :last-name  s/Str
    :company    s/Str
@@ -27,22 +27,22 @@
                            :title "Guestbook API"
                            :description "..."}}}}
   (context "/api" []
-    (GET "/visitors/today" []
-      :summary "Today's visitors"
-      (ok (db/get-visitors)))
-    (context "/visitors"
-      (GET []
+    (context "/visitors" []
+      (GET "/today" []
+        :return s/Any
+        :summary "Today's visitors"
+        (ok (db/get-visitors-by-date "")))
+      (GET "/" []
         (ok (db/get-visitors)))
-      (POST req
+      (GET "/:id" req
+        :return Visitor
+        (ok (db/get-visitor nil)))
+      (POST "/" req
+        :return Visitor
+        :body [visitor NewVisitor]
+        (ok (db/create-visitor visitor)))
+      (PUT "/:id" req
         :return s/Any
         :body [visitor NewVisitor]
-        (ok {:_id
-             (.toString
-               (:_id (db/create-visitor visitor)))}))
-      (PUT req
-        :return s/Any
-        :body [visitor NewVisitor]
-        (ok {:_id
-          (.toString
-            (:_id (db/update-visitor visitor)))})))))
+        (ok (db/update-visitor nil visitor))))))
 
