@@ -17,12 +17,11 @@
 (defn create-visitor [visitor]
   (mc/insert-and-return db visitors-col visitor))
 
-(defn update-visitor [id first-name last-name company host]
-  (mc/update db visitors-col {:_id id}
-             {$set {:first_name first-name
-                    :last_name last-name
-                    :company company
-                    :host host}}))
+(defn update-visitor [visitor]
+  (let [id (:_id visitor)
+        v (dissoc visitor :_id)]
+       (mc/update db visitors-col {:_id id}
+                  {$set v})))
 
 (defn get-visitors []
   (mc/find-maps db visitors-col))

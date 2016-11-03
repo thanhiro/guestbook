@@ -30,12 +30,19 @@
     (GET "/visitors/today" []
       :summary "Today's visitors"
       (ok (db/get-visitors)))
-    (GET "/visitors" []
-      (ok (db/get-visitors)))
-    (POST "/visitors" req
-      :return s/Any
-      :body [visitor NewVisitor]
-      (ok {:_id
-           (.toString
-             (:_id (db/create-visitor visitor)))}))))
+    (context "/visitors"
+      (GET []
+        (ok (db/get-visitors)))
+      (POST req
+        :return s/Any
+        :body [visitor NewVisitor]
+        (ok {:_id
+             (.toString
+               (:_id (db/create-visitor visitor)))}))
+      (PUT req
+        :return s/Any
+        :body [visitor NewVisitor]
+        (ok {:_id
+          (.toString
+            (:_id (db/update-visitor visitor)))})))))
 
