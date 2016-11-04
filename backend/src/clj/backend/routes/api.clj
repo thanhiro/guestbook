@@ -10,13 +10,13 @@
 (s/defschema
   Visitor
   {
-   :_id        s/Str
+   :_id       s/Str
    :firstName s/Str
    :lastName  s/Str
-   :company    s/Str
-   :host       s/Str
-   :date       Long
-   :city       s/Str
+   :company   s/Str
+   :host      s/Str
+   :date      Long
+   :city      s/Str
    })
 (s/defschema NewVisitor (dissoc Visitor :_id))
 
@@ -29,10 +29,11 @@
   (context "/api" []
     (context "/visitors" []
       (GET "/today" []
-        :return s/Any
+        :return [Visitor]
         :summary "Today's visitors"
         (ok (db/get-visitors-by-date "")))
       (GET "/" []
+        :return [Visitor]
         (ok (db/get-visitors)))
       (GET "/:id" req
         :return Visitor
