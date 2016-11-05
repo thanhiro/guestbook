@@ -1,6 +1,7 @@
 (ns backend.routes.api
   (:require [backend.layout :as layout]
             [backend.db.core :as db]
+            [java-time :as time]
             [compojure.api.sweet :refer :all]
             [schema.core :as s]
             [ring.util.http-response :refer :all]
@@ -29,9 +30,9 @@
   (context "/api" []
     (context "/visitors" []
       (GET "/today" []
-        :return [Visitor]
-        :summary "Today's visitors"
-        (ok (db/get-visitors-by-date "")))
+           :return [Visitor]
+           :summary "Today's visitors"
+           (ok (db/get-visitors-by-date (time/local-date))))
       (GET "/" []
         :return [Visitor]
         (ok (db/get-visitors)))

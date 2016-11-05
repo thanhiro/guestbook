@@ -7,6 +7,7 @@
                  [buddy "1.1.0"]
                  [ch.qos.logback/logback-classic "1.1.7"]
                  [cider/cider-nrepl "0.14.0-SNAPSHOT"]
+                 [clojure.java-time "0.2.2"]
                  [cljs-ajax "0.5.8"]
                  [com.novemberain/monger "3.0.0-rc2"]
                  [compojure "1.5.1"]
