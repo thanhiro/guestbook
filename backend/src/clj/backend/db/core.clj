@@ -1,9 +1,10 @@
 (ns backend.db.core
-    (:require [monger.core :as mg]
-              [monger.collection :as mc]
-              [monger.operators :refer :all]
-              [mount.core :refer [defstate]]
-              [backend.config :refer [env]]))
+  (:require [monger.core :as mg]
+            [monger.collection :as mc]
+            [monger.operators :refer :all]
+            [mount.core :refer [defstate]]
+            [backend.config :refer [env]])
+  (:import org.bson.types.ObjectId))
 
 (defstate db*
   :start (-> env :database-url mg/connect-via-uri)
@@ -23,7 +24,8 @@
 
 (defn update-visitor [id visitor]
   (let [v (dissoc visitor :_id)]
-    (mc/update db visitors-col {:_id id}
+    (println v)
+    (mc/update db visitors-col {:_id (ObjectId. id)}
                {$set v})))
 
 (defn get-visitors-by-date [date]
@@ -38,5 +40,7 @@
 
 (defn get-visitor [id]
   (let
-    [res (mc/find-one-as-map db visitors-col {:_id id})]
+    [res
+     (mc/find-one-as-map db visitors-col
+                         {:_id (ObjectId. id)})]
     (serialize-object-id-in res)))

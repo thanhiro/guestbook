@@ -5,8 +5,7 @@
             [compojure.api.sweet :refer :all]
             [schema.core :as s]
             [ring.util.http-response :refer :all]
-            [clojure.java.io :as io])
-    (:import org.bson.types.ObjectId))
+            [clojure.java.io :as io]))
 
 (s/defschema
   Visitor
@@ -39,7 +38,8 @@
         (ok (db/get-visitors)))
       (GET "/:id" req
         :return Visitor
-        (ok (db/get-visitor nil)))
+        (ok (db/get-visitor
+              (-> req :params :id))))
       (POST "/" req
         :return Visitor
         :body [visitor NewVisitor]
@@ -47,5 +47,7 @@
       (PUT "/:id" req
         :return s/Any
         :body [visitor NewVisitor]
-        (ok (db/update-visitor nil visitor))))))
+        (do (db/update-visitor
+              (-> req :params :id) visitor)
+            (ok {:status "OK"}))))))
 
