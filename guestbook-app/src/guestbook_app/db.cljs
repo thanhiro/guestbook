@@ -10,6 +10,8 @@
 (def app-db
   {
    :greeting       "Welcome to Arcusys office"
-   :loading        false
-   :visitors-all []
+   :loading?       false
+   :error          nil
+   :visitors-all   []
+   :posted-visitor {}
    })

@@ -37,13 +37,16 @@
 (reg-event-db
   :bad-response
   (fn
-    [db [_ _]]
+    [db [_ response]]
     (-> db
-        (assoc :loading? false))))
+        (assoc
+          :loading? false
+          :error response))))
 
 (defn response-handler [key]
   (fn
     [db [_ response]]
+    (println response)
     (-> db
         (assoc :loading? false)
         (assoc key response))))
@@ -55,6 +58,10 @@
 (reg-event-db
   :process-response-today
   (response-handler :visitors-today))
+
+(reg-event-db
+  :process-response-post
+  (response-handler :posted-visitor))
 
 (defn http-action
   [opts]
@@ -74,10 +81,23 @@
      }))
 
 (reg-event-fx
-  :request-visitors-today
+  :request-visitors-all
   (http-action
     {:method     :get
      :uri        "http://localhost:3000/api/visitors"
      :on-success [:process-response-all]
      }))
 
+(reg-event-fx
+  :post-visitor
+  (fn
+    [{db :db} data]
+    (let [body (js/JSON.stringify (clj->js (last data)))]
+      {:http-fetch
+           {:method     :post
+            :uri        "http://localhost:3000/api/visitors"
+            :body       body
+            :on-success [:process-response-post]
+            :on-failure [:bad-response]
+            }
+       :db (assoc db :loading? true)})))

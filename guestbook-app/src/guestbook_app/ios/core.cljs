@@ -15,6 +15,16 @@
 (defn alert [title]
   (.alert (.-Alert ReactNative) title))
 
+;; Local r/atom to keep form state,
+;; should be in re-form db in some point.
+(def form-ratom
+  (r/atom {
+           :firstName ""
+           :lastName  ""
+           :host      ""
+           :company   ""
+           }))
+
 (defn loading-panel []
   (fn []
     [layout
@@ -49,12 +59,16 @@
 (defn add-form []
   [view {:style (:form-block s/styles)}
    [view {:style (:inputs s/styles)}
-    [input-block "First name"]
-    [input-block "Last name"]
-    [input-block "Company"]
-    [input-block "Host"]]
+    [input-block "First name"
+      #(reset! form-ratom (assoc @form-ratom :firstName %))]
+    [input-block "Last name"
+      #(reset! form-ratom (assoc @form-ratom :lastName %))]
+    [input-block "Company"
+      #(reset! form-ratom (assoc @form-ratom :company %))]
+    [input-block "Host"
+      #(reset! form-ratom (assoc @form-ratom :host %))]]
    [view {:style (:btn-block s/styles)}
-    [button "Add" #(dispatch [:request-visitors-today])]]])
+    [button "Add" #(dispatch [:post-visitor @form-ratom])]]])
 
 (defn render-scene [ds col-width]
   [view {:style {:flex 1}}
@@ -86,8 +100,9 @@
                       :index  0
                       :routes routes})
         greeting (subscribe [:get-greeting])
+        error (subscribe [:get-error])
+        loading? (subscribe [:get-loading])
         visitors-today (subscribe [:get-visitors-today])
-        ;; visitors-today (take 3 @visitors-all)
         ds (data-source)
         data-source-all (clone-ds-with-rows ds @visitors-today)
         data-source-today (clone-ds-with-rows ds @visitors-today)
@@ -101,6 +116,10 @@
         "Please leave a note of your visit"]
 
        [add-form]
+
+       ;;[text (js/JSON.stringify (clj->js @form-ratom))]
+       [text (js/JSON.stringify (clj->js @error))]
+       [text (str @loading?)]
 
        [tab-bar
         [tab-link "visitors today" (handle-tab-press 0 navi-state routes)]

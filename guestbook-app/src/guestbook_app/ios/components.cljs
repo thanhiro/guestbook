@@ -3,14 +3,14 @@
             [guestbook-app.ui :refer [view text text-input touchable-highlight]]
             [guestbook-app.ios.styles :as s]))
 
-(defn input-block [name]
+(defn input-block [name handle-text-change]
   [view {:style (:input-block-wrapper s/styles)}
    [text {:style (:input-block-label s/styles)} name]
    [text-input
     {
      :style          (:input-block-input s/styles)
      :placeholder    name
-     ;;:on-change-text #(str %)
+     :on-change-text handle-text-change
      }]])
 
 (defn button [label handle-press]

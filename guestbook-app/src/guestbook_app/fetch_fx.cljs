@@ -16,11 +16,11 @@
 
 (defn fetch
   [opts]
-  (do
-    (-> (js/fetch (:uri opts) (clj->js opts))
-        (.then #(js->clj (.json %)))
-        (.then #(dispatch (conj (:on-success opts) %)))
-        (.catch #(dispatch (conj (:on-failure opts) %))))))
+  (-> (js/fetch (:uri opts) (clj->js opts))
+      ;;(.then #(if (.ok %)) % (do (println %) (-.reject js/Promise %)))
+      (.then #(js->clj (.json %)))
+      (.then #(dispatch (conj (:on-success opts) %)))
+      (.catch #(dispatch (conj (:on-failure opts) %)))))
 
 (reg-fx
   :http-fetch

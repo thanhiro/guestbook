@@ -8,6 +8,16 @@
          (not (empty? (:visitors-today db))))))
 
 (reg-sub
+  :get-loading
+  (fn [db _]
+    (:loading? db)))
+
+(reg-sub
+  :get-error
+  (fn [db _]
+    (:error db)))
+
+(reg-sub
   :get-greeting
   (fn [db _]
     (:greeting db)))
