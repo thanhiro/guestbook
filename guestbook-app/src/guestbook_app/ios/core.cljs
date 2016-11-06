@@ -38,12 +38,13 @@
         rstyle (merge base-style (when (is-odd? id) (:list-row-odd s/styles)))
         col-style (assoc (:list-col s/styles) :width width)]
     [view {:style rstyle}
-     [text {:style col-style} (.-name data)]
-     [text {:style col-style} (.-name data)]
-     [text {:style col-style} (.-name data)]
-     [text {:style col-style} (.-name data)]
+     [text {:style col-style} (.-firstName data)]
+     [text {:style col-style} (.-lastName data)]
+     [text {:style col-style} (.-company data)]
+     [text {:style col-style} (.-host data)]
      [view {:style (assoc (:list-btn-col s/styles) :width width)}
-      [button "Check-in" #(alert "clicked!")]]]))
+      [button "Check-in"
+        #(alert (str (.-lastName data) " " (.-firstName data)))]]]))
 
 (defn add-form []
   [view {:style (:form-block s/styles)}
@@ -85,11 +86,11 @@
                       :index  0
                       :routes routes})
         greeting (subscribe [:get-greeting])
-        visitors-all (subscribe [:get-visitors-all])
-        visitors-today (take 3 @visitors-all)
+        visitors-today (subscribe [:get-visitors-today])
+        ;; visitors-today (take 3 @visitors-all)
         ds (data-source)
-        data-source-all (clone-ds-with-rows ds @visitors-all)
-        data-source-today (clone-ds-with-rows ds visitors-today)
+        data-source-all (clone-ds-with-rows ds @visitors-today)
+        data-source-today (clone-ds-with-rows ds @visitors-today)
         size (.get dimensions "window")
         width (- (.-width size) 80)
         col-width (/ width 5)]
@@ -126,5 +127,5 @@
 
 (defn init []
   (dispatch [:initialize-db])
-  (dispatch [:request-visitors-all])
+  (dispatch [:request-visitors-today])
   (.registerComponent app-registry "GuestbookApp" #(r/reactify-component app-root)))

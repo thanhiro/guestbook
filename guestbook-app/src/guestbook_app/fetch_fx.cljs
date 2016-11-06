@@ -5,7 +5,7 @@
 
 (defn request->fetch-options
   [{:as   request
-    :keys [uri method on-success on-failure]
+    :keys [method on-success on-failure]
     :or   {on-success [:http-no-on-success]
            on-failure [:http-no-on-failure]}}]
   (-> request

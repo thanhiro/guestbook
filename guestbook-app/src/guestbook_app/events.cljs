@@ -41,22 +41,43 @@
     (-> db
         (assoc :loading? false))))
 
-(reg-event-db
-  ;; when the GET succeeds
-  :process-response
+(defn response-handler [key]
   (fn
     [db [_ response]]
     (-> db
         (assoc :loading? false)
-        (assoc :visitors-all response))))
+        (assoc key response))))
 
-(reg-event-fx
-  :request-visitors-all
+(reg-event-db
+  :process-response-all
+  (response-handler :visitors-all))
+
+(reg-event-db
+  :process-response-today
+  (response-handler :visitors-today))
+
+(defn http-action
+  [opts]
   (fn
     [{db :db} _]
     {:http-fetch
-         {:method     :get
-          :uri        "https://jsonplaceholder.typicode.com/users"
-          :on-success [:process-response]
-          :on-failure [:bad-response]}
+         (assoc opts
+           :on-failure [:bad-response])
      :db (assoc db :loading? true)}))
+
+(reg-event-fx
+  :request-visitors-today
+  (http-action
+    {:method     :get
+     :uri        "http://localhost:3000/api/visitors/today"
+     :on-success [:process-response-today]
+     }))
+
+(reg-event-fx
+  :request-visitors-today
+  (http-action
+    {:method     :get
+     :uri        "http://localhost:3000/api/visitors"
+     :on-success [:process-response-all]
+     }))
+
