@@ -119,8 +119,7 @@
         ready? (subscribe [:initialised?])
         ]
     (fn []
-      (let [th (r/current-component)
-            ]
+      (let [th (r/current-component)]
         (if-not @ready?
           [loading-panel]
           [main-panel])))))

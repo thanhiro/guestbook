@@ -17,7 +17,8 @@
    :company   s/Str
    :host      s/Str
    :date      Long
-   :city      s/Str
+   :city      s/Str,
+   :checkedIn Boolean
    })
 (s/defschema NewVisitor (dissoc Visitor :_id))
 
