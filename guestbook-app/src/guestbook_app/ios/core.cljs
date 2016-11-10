@@ -117,7 +117,7 @@
 
        [add-form]
 
-       ;;[text (js/JSON.stringify (clj->js @form-ratom))]
+       [text (js/JSON.stringify (clj->js @form-ratom))]
        [text (js/JSON.stringify (clj->js @error))]
        [text (str @loading?)]
 
